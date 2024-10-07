@@ -1,0 +1,16 @@
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Astro and node
+node_modules/
+.astro/
+dist/
+.DS_Store
+.envrc

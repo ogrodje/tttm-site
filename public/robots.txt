@@ -1,0 +1,4 @@
+# yey.
+User-agent: *
+Allow: /
+

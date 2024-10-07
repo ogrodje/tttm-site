@@ -1,0 +1,98 @@
+---
+const { title } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="wrap">
+      <nav class="nav">
+        <div class="logo">The TTTM Challenge</div>
+        <a href="/" class="about">About</a>
+        <a href="/rankings" class="rankings">Rankings</a>
+        <a href="/sandbox" class="sandbox">Sandbox</a>
+      </nav>
+      <h1>{title}</h1>
+      <article>
+        <slot /> <!-- your content is injected here -->
+      </article>
+      <!-- <Footer /> -->
+    </div>
+  </body>
+</html>
+<style lang="scss" is:global>
+// Colors: https://x.com/alexcristache/status/1841852966359146798?t=AZl7vBZcaJvRyxx6Yz_g-w
+@use "sass:list";
+@use "sass:color";
+
+$font-stack: Helvetica, Arial;
+$background-color: #000000;
+$primary-color: #FFFFFF;
+$logo-color: #FF6500;
+
+html, body {
+  margin:0;
+  padding:0;
+}
+
+
+body {
+  $font-stack: list.append($font-stack, sans-serif);
+  font-family: $font-stack;
+  padding: 20px;
+
+  background-color: $background-color;
+  color: $primary-color;
+}
+
+body, p {
+  font-size: 12pt;
+  line-height: 16pt;
+}
+
+a {
+  color: #999;
+}
+
+nav.nav {
+  line-height: 40px;
+  height: 40px;
+  display: block;
+  clear: both;
+  margin-bottom: 20px;
+
+  .logo {
+    background-color: $logo-color;
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .logo, a {
+    color: #FFFFFF;
+    margin-right:10px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  a:hover {
+    background-color: color.scale(#333, $lightness: 10%);
+  }
+}
+
+h1, h2, h3 {
+  font-weight: 300;
+  margin-bottom: 20px
+}
+
+div.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+</style>

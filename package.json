@@ -1,0 +1,25 @@
+{
+  "name": "tttm-site",
+  "version": "0.0.1",
+  "description": "The core site for tttm",
+  "main": "index.js",
+  "repository": "https://github.com/ogrodje/tttm-site",
+  "author": "Oto Brglez",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@astrojs/mdx": "^3.1.7",
+    "astro": "^4.15.11"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/ts-plugin": "^1.10.2",
+    "sass": "^1.79.4",
+    "typescript": "^5.6.2"
+  }
+}
