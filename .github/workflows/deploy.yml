@@ -16,18 +16,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    # - uses: actions/setup-node@v4
+    #   with:
+    #     node-version: 21 
+    #     cache: 'yarn'
+    # - name: "Build it"
+    #   run: yarn install --frozen-lockfile && yarn run build
+
+    # Too slow. ;/  
     - uses: cachix/install-nix-action@v26
     - uses: cachix/cachix-action@v14
-      with:
-        name: devenv
-    
+       with:
+         name: devenv
+     
     - run: nix profile install nixpkgs#devenv
     - run: devenv shell yarn run build
 
     - name: Upload website artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: "build"
+        path: "dist"
 
   deploy:
     needs: build
