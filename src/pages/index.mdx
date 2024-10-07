@@ -2,7 +2,6 @@
 title: The TTTM Challenge
 layout: ../layouts/MainLayout.astro
 ---
-
 # The TTTM Challenge: The machine-to-machine challenge of tic-tac-toe 🕹️
 
 The [tttm] is a game of [tic-tac-toe][ttt] played between APIs that players implement themselves.
@@ -10,31 +9,34 @@ The [tttm] is a game of [tic-tac-toe][ttt] played between APIs that players impl
 ## Rules
 
 1. Players can use whatever language and whatever technology.
-2. The player must submit the URL to a server via the [PR request](https://github.com/ogrodje/tttm/pulls) on this repository. All player servers are listed in [players.yml](./players.yml).
-3. The player can submit as many servers as he or she wants.
-4. The server needs to follow the [Player Server Protocol](#player-server-protocol) described in this document.
-5. The game server will randomly pick player servers and execute gameplay.
-6. Games will be played every hour. Each server will play 100 games every hour.
-7. The server needs to respond in **3 seconds**. Otherwise, the opposing server wins.
-8. `TBD: Scoring`
+2. The player must submit the URL to a server via the PR request to the [tttm repository](https://github.com/ogrodje/tttm/pulls).
+3. All players and their servers are listed in [players.yml](https://github.com/ogrodje/tttm/blob/master/players.yml).
+4. The player can submit as many servers as he or she wants.
+5. The server needs to follow the [Player Server Protocol](#player-server-protocol) described in this document.
+6. The game server will randomly pick player servers and execute gameplay.
+7. Games will be played every hour. Each server will play 100 games every hour.
+8. The server needs to respond in **3 seconds**. Otherwise, the opposing server wins the match.
+9. ⚠️ As the platform and systems are still in development **scoring** is still subject to change.
 
 ## Player Server Protocol
 
-Players need to implement an HTTP server that needs to have one endpoint.
+The players need to implement an HTTP server that needs to have one endpoint.
 
-### `GET /move`
+### The `GET /move` request
 
 The game server will pass the following URL `query parameters` to the player server.
 
 - `gid` - `UUID` that represents the given game ID.
-  - It can be used on player servers to stick together individual games.
+- It can be used on players servers to stick together individual games.
 - `size` - A number - size - of [tic-tac-toe][ttt] grid.
-  - By default, the size is set to `3`, representing the grid of size `3x3`. To win, one has to have 3 symbols in either row/column/diagonal.
-  - ⚠️ The `tttm` engine currently only supports a size of 3. We will expand this to `5x5` and `7x7`, where one must put four symbols to win.
+    - By default, the size is set to `3`, representing the grid of size `3x3`.
+    - To win a game one has to have 3 symbols in either row/column/diagonal.
+    - ⚠️ The `tttm` engine currently only supports a size of 3.
+    - ⚠️ We will expand this to `5x5` and `7x7`, where one must put four symbols to win.
 - `playing` - A symbol that the player server needs to play. Possible values are `X` or `O`
 - `moves` - A string that represents the previous moves.
-  - Moves are separated by `_` and positions by `-`
-  - Example: `X-1-1_O-0-0` means that the `X` symbol was at location `1,1` (centre of grid) and `O` at `0,0` (top-left corner of the grid)
+- Moves are separated by `_` and positions by `-`
+- Example: `X-1-1_O-0-0` means that the `X` symbol was at location `1,1` (centre of grid) and `O` at `0,0` (top-left corner of the grid)
 
 ### Body
 
@@ -59,6 +61,12 @@ Error:Sorry. Can't do it bro.
 ## Why?
 
 Why not? We want to see who can build the universe's fastest and most "intelligent" APIs [for the lolz](https://www.urbandictionary.com/define.php?term=for+the+lolz).
+
+## Authors
+
+- [Oto Brglez](https://github.com/otobrglez)
+- [The Ogrodje Podcast](https://ogrodje.si)
+- [You?](https://github.com/ogrodje/tttm)
 
 [tttm]: https://github.com/ogrodje/tttm
 [ttt]: https://en.wikipedia.org/wiki/Tic-tac-toe
