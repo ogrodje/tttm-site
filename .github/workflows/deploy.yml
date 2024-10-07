@@ -27,8 +27,8 @@ jobs:
     # Too slow. ;/  
     - uses: cachix/install-nix-action@v26
     - uses: cachix/cachix-action@v14
-       with:
-         name: devenv
+      with:
+        name: devenv
      
     - run: nix profile install nixpkgs#devenv
     - run: devenv shell yarn run build
