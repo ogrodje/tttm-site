@@ -1,37 +1,57 @@
 name: Deploy to GitHub Pages
 
 on:
+  pull_request:
   push:
-    branches: [master]
-  
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install, build, and upload your site output
-        uses: withastro/action@v2
-        with:
-          node-version: 20
-          package-manager: yarn@latest
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 18. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - uses: actions/checkout@v4
+    - uses: cachix/install-nix-action@v26
+    - uses: cachix/cachix-action@v14
+      with:
+        name: devenv
+    
+    - run: nix profile install nixpkgs#devenv
+    - run: devenv shell yarn run build
+
+# on:
+#   push:
+#     branches: [master]
+#   
+#   workflow_dispatch:
+# 
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
+# 
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Install, build, and upload your site output
+#         uses: withastro/action@v2
+#         with:
+#           node-version: 20
+#           package-manager: yarn@latest
+#           # path: . # The root location of your Astro project inside the repository. (optional)
+#           # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 18. (optional)
+#           # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+# 
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
+#     steps:
+#       - name: Deploy to GitHub Pages
+#         id: deployment
+#         uses: actions/deploy-pages@v4# 
