@@ -25,9 +25,9 @@ jobs:
     - run: devenv shell yarn run build
 
     - name: Upload website artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "build"
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: "build"
 
   deploy:
     needs: build
