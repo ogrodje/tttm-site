@@ -15,8 +15,7 @@ const getTitle = (title: string | undefined): string => {
 <body>
 <div class="wrap">
     <nav class="nav">
-        <div class="logo">The TTTM Challenge</div>
-        <a href="/" class="about">About</a>
+        <a href="/" class="logo about">The <span class="main">TTTM</span> Challenge</a>
         <a href="/rankings" class="rankings">Rankings</a>
         <a href="/sandbox" class="sandbox">Sandbox</a>
     </nav>
@@ -36,7 +35,7 @@ const getTitle = (title: string | undefined): string => {
   $font-stack: Helvetica, Arial;
   $background-color: #000000;
   $primary-color: #FFFFFF;
-  $logo-color: #FF6500;
+  $logo-color: #ff6500;
 
   html, body {
     margin: 0;
@@ -75,11 +74,20 @@ const getTitle = (title: string | undefined): string => {
       background-color: $logo-color;
       padding-left: 10px;
       padding-right: 10px;
+      text-decoration: none;
+
+      span.main {
+        font-weight: 700;
+      }
+
+      &:hover {
+        background-color: color.grayscale($logo-color);
+      }
     }
 
     .logo, a {
       color: #FFFFFF;
-      margin-right: 10px;
+      margin-right: 5px;
       display: inline-block;
       height: 40px;
       line-height: 40px;
@@ -94,11 +102,28 @@ const getTitle = (title: string | undefined): string => {
 
   h1, h2, h3 {
     font-weight: 300;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    line-height: 40px;
   }
 
   div.wrap {
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  table {
+    background-color: #24292e;
+    border: 1px solid #666;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    th, td {
+      padding: 5px;
+      margin: 0;
+    }
+
+    thead th {
+      border-bottom: 2px solid #eee;
+    }
   }
 </style>
