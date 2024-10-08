@@ -10,13 +10,14 @@ The `tttm` is a game of [tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe)
 
 1. Players can use **any language** and **any technology**.
 2. The player can submit as many servers as he or she wants.
-3. The player must submit the URL to a server via the PR request to the [tttm repository](https://github.com/ogrodje/tttm/pulls).
-4. All players and their servers are listed in [players.yml](https://github.com/ogrodje/tttm/blob/master/players.yml).
-5. The server needs to follow the [Player Server Protocol](#player-server-protocol) described in this document.
-6. The game server will randomly pick player servers and execute gameplay.
-7. Games will be played every hour. Each server will play 100 games every hour.
-8. The server needs to respond in **3 seconds**. Otherwise, the opposing server wins the match.
-9. ⚠️ As the platform and systems are still in development **scoring** is still subject to change.
+3. The player must submit the URL to a server via the PR request to the [tttm repository - `players.yml`](https://github.com/ogrodje/tttm/pulls).
+4. The player server needs to follow the [Player Server Protocol](#player-server-protocol) described in this document.
+5. The player server needs to respond in **2 seconds**. Otherwise, the opposing server wins the game.
+6. All players and their servers are listed in [players.yml](https://github.com/ogrodje/tttm/blob/master/players.yml).
+
+### Notes
+- ⚠️ As the platform and systems are still in heavy development scoring and rankings is still subject to change.
+- The [tttm](https://github.com/ogrodje/tttm) is a open-source game engine that actually executes all the matches.
 
 ## Player Server Protocol
 
@@ -27,15 +28,15 @@ The players need to implement an HTTP server that needs to have one endpoint.
 The game server will pass the following URL `query parameters` to the player server.
 
 - `gid` - `UUID` that represents the given game ID.
-- `size` - The size of [tic-tac-toe][ttt] grid. By default, the size is set to `3`, representing the grid of size `3x3`.
-- `playing` - A symbol that the player server needs to play. Possible values are `X` or `O`.
+- `size` - The size of [tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe) grid.
+    - By default, the size is set to `3`, representing the grid of size `3x3`.
+    - Possible sizes are `3`, `5` and `7`.
+    - On grids with size `5` or `7` - **four symbols** are needed for a win.
+- `playing` - A symbol that the player server needs to play.
+    - Possible values are `X` or `O`.
 - `moves` - A string that represents the previous moves.
-
-#### Moves payload
-
-Moves are separated by `_` and positions by `-`.
-
-Example: `X-1-1_O-0-0` means that the `X` symbol was at location `1,1` (centre of grid) and `O` at `0,0` (top-left corner of the grid).
+    - Moves are separated by `_` and positions by `-`.
+    - Example: `X-1-1_O-0-0` means that the `X` symbol was at location `1,1` (centre of grid) and `O` at `0,0` (top-left corner of the grid).
 
 ### Body
 
