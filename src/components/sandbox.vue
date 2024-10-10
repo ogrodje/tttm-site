@@ -35,8 +35,8 @@ const matchSettingsToUrl = ({numberOfGames, serverAUrl, serverBUrl}: MatchSettin
   return base.href
 }
 
-const defaultServerAUrl: string = "http://tttm-randy.ogrodje.si"
-const defaultServerBUrl: string = "https://tttm-maxi.matjaz.workers.dev"
+const defaultServerAUrl: string = "https://tttm-maxi.matjaz.workers.dev"
+const defaultServerBUrl: string = "https://tttm-tic-tac-toe.pzagor2.workers.dev"
 
 const matchSettings: Ref<MatchSettings> = ref<MatchSettings>({
   numberOfGames: 10,
