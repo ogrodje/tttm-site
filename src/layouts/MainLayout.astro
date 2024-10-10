@@ -16,7 +16,7 @@ const getTitle = (title: string | undefined): string => {
 <div class="wrap">
     <nav class="nav">
         <a href="/" class="logo about">The <span class="main">TTTM</span> Challenge</a>
-        <a href="/rankings" class="rankings">Rankings</a>
+        <!-- <a href="/rankings" class="rankings">Rankings</a> -->
         <a href="/sandbox" class="sandbox">Sandbox</a>
     </nav>
     <h1>{title}</h1>
@@ -54,9 +54,9 @@ const getTitle = (title: string | undefined): string => {
     padding: 10px
   }
 
-  body, p {
-    font-size: 13pt;
-    line-height: 18pt;
+  body, p, label, button, input, select, textarea {
+    font-size: 12pt;
+    line-height: 15pt;
   }
 
   a {
@@ -124,6 +124,18 @@ const getTitle = (title: string | undefined): string => {
 
     thead th {
       border-bottom: 2px solid #eee;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 5px;
+    label {
+      display: inline-block;
+      width: 200px;
+      margin-right: 10px;
+    }
+    input {
+      width: 500px;
     }
   }
 </style>

@@ -1,6 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import Food from "../components/food.vue";
+import Sandbox from "../components/sandbox.vue";
+
 ---
 <MainLayout title="Sandbox">
-  <p>We'll have sandbox for developers here.</p>
+    <Sandbox client:load/>
 </MainLayout>

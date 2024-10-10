@@ -6,6 +6,9 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+env:
+  PUBLIC_TTTM_WS_URL: wss://tttm.tttm.dev/sandbox
+
 permissions:
   contents: read
   pages: write
