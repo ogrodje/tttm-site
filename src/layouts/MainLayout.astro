@@ -21,9 +21,8 @@ const getTitle = (title: string | undefined): string => {
     </nav>
     <h1>{title}</h1>
     <article>
-        <slot/> <!-- your content is injected here -->
+        <slot/>
     </article>
-    <!-- <Footer /> -->
 </div>
 </body>
 </html>
@@ -54,9 +53,14 @@ const getTitle = (title: string | undefined): string => {
     padding: 10px
   }
 
-  body, p, label, button, input, select, textarea {
+  body, p, label, button, input, select, textarea, option {
     font-size: 12pt;
     line-height: 15pt;
+  }
+
+  input, select, option {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   a {
@@ -129,11 +133,13 @@ const getTitle = (title: string | undefined): string => {
 
   .form-group {
     margin-bottom: 5px;
+
     label {
       display: inline-block;
       width: 200px;
       margin-right: 10px;
     }
+
     input {
       width: 500px;
     }

@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import {type Ref, ref, onMounted, onUnmounted, computed} from 'vue';
+import {type Ref, ref, onUnmounted, computed} from 'vue';
 import type {MatchCompletedMessage, Message, MessageType} from "./Message.ts";
 
 const PUBLIC_TTTM_WS_URL: string = `${import.meta.env.PUBLIC_TTTM_WS_URL}`;
 
 interface MatchSettings {
+  size: number,
   numberOfGames: number,
   serverAUrl: string,
   serverBUrl: string,
 }
+
+const defaultMatchSettings: MatchSettings = {
+  size: 3,
+  numberOfGames: 10,
+  serverAUrl: "https://tttm-maxi.matjaz.workers.dev",
+  serverBUrl: "https://tttm-tic-tac-toe.pzagor2.workers.dev"
+} as MatchSettings;
 
 function matchSettingsValidate(settings: MatchSettings): MatchSettings {
   const {numberOfGames, serverAUrl, serverBUrl} = settings
@@ -27,27 +35,23 @@ function matchSettingsValidate(settings: MatchSettings): MatchSettings {
   return settings
 }
 
-const matchSettingsToUrl = ({numberOfGames, serverAUrl, serverBUrl}: MatchSettings) => {
+const matchSettingsToUrl = ({size, numberOfGames, serverAUrl, serverBUrl}: MatchSettings) => {
   const base = new URL(PUBLIC_TTTM_WS_URL);
   base.searchParams.append("number-of-games", numberOfGames.toString())
   base.searchParams.append("server-a", serverAUrl)
   base.searchParams.append("server-b", serverBUrl)
+  base.searchParams.append("size", size.toString())
+
   return base.href
 }
 
-const defaultServerAUrl: string = "https://tttm-maxi.matjaz.workers.dev"
-const defaultServerBUrl: string = "https://tttm-tic-tac-toe.pzagor2.workers.dev"
-
-const matchSettings: Ref<MatchSettings> = ref<MatchSettings>({
-  numberOfGames: 10,
-  serverAUrl: defaultServerAUrl,
-  serverBUrl: defaultServerBUrl
-})
-
+// State
+const matchSettings: Ref<MatchSettings> = ref<MatchSettings>(defaultMatchSettings)
 let websocket: WebSocket | undefined = null;
+const messages = ref<Message[]>([]);
 
+// Websockets
 const canStart: () => boolean = () => !websocket;
-
 const wsOpen = () => {
 }
 
@@ -60,8 +64,7 @@ const wsOnError = (error) => {
   console.error('WebSocket encountered an error:', error);
 }
 
-const messages = ref<Message[]>([]);
-
+// Match start
 const startMatch = () => {
   const settings = matchSettingsValidate(matchSettings.value);
   const wsUrl = matchSettingsToUrl(settings);
@@ -77,9 +80,6 @@ const startMatch = () => {
     websocket = null;
   }
 }
-
-onMounted(() => {
-});
 
 onUnmounted(() => {
   if (websocket) websocket.close();
@@ -112,6 +112,15 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
                min="1"
                step="1"
                max="50"/>
+      </div>
+
+      <div class="form-group">
+        <label for="size">Size of the grid</label>
+        <select id="size" name="size" v-model="matchSettings.size">
+          <option value="3">3x3</option>
+          <option value="5">5x5</option>
+          <option value="7">7x7</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -168,7 +177,7 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
     <div class="messages-wrap" v-if="messages.length != 0">
       <p class="title">Real-time exchange</p>
       <div class="message" v-for="message in messages">
-        {{ message.type }} - {{ message.message }}
+        {{ message.message }}
       </div>
     </div>
   </div>
@@ -177,6 +186,29 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
 form {
   display: block;
   margin-bottom: 20px;
+}
+
+form .form-group.offset-left {
+}
+
+form .form-group.size-group {
+  display: block;
+  clear: both;
+  float: none;
+  border: 1px solid pink;
+
+  .control-group {
+    border: 1px solid red;
+    width: 20%;
+    height: 30px;
+    line-height: 30px;
+
+    label, input {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
 }
 
 .match-result, .messages-wrap {
