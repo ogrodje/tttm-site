@@ -62,6 +62,18 @@ const movesString = () => {
   return moves.value.map(move => `${move.symbol}-${move.row}-${move.column}`).join("_") || "Nothing."
 }
 
+const structPayload = () => {
+  return moves.value.map(({symbol, row, column}) => `${symbol} -> (${row}, ${column})`).join(",\n") || "Nothing."
+}
+
+const movesValid = () => {
+  return !(moves.value.map(({symbol, row, column}, index) => {
+    if (index % 2 == 0 && symbol == "X") {
+      return true
+    } else return index % 2 != 0 && symbol == "O";
+  }).find((value) => value === false) === undefined)
+}
+
 </script>
 <template>
   <p>This tool will help you build the payload for the <code>moves</code> payload.</p>
@@ -101,7 +113,7 @@ const movesString = () => {
     </div>
 
     <div class="split right">
-      <div class="moves">
+      <div class="moves" :class="{'valid': movesValid()}">
         <div class="move" v-for="(move, index) in moves">
           #{{ index }} {{ move.row }}, {{ move.column }}, {{ move.symbol }}
         </div>
@@ -109,13 +121,29 @@ const movesString = () => {
     </div>
   </div>
 
-  <div class="moves-payload">
+  <div class="moves-payload" :class="{'valid': movesValid()}">
     <h2>Moves payload</h2>
     <div>{{ movesString() }}</div>
   </div>
+
+  <div class="struct-payload" :class="{'valid': movesValid()}">
+    <h2>Struct payload</h2>
+    <div>{{ structPayload() }}</div>
+  </div>
+
 </template>
 <style lang="scss" scoped>
 $grid-width: 420px;
+
+.moves,
+.moves-payload,
+.struct-payload {
+  padding: 5px;
+
+  &.valid {
+    background-color: #933b4b;
+  }
+}
 
 .display-split {
   display: flex;
