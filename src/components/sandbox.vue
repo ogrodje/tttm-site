@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {type Ref, ref, onUnmounted, computed} from 'vue';
 import type {MatchCompletedMessage, Message, MessageType} from "./Message.ts";
+import {type PlayerServer, PlayerServerService} from "./PlayerServer.ts";
 
 const PUBLIC_TTTM_WS_URL: string = `${import.meta.env.PUBLIC_TTTM_WS_URL}`;
 
@@ -8,7 +9,9 @@ interface MatchSettings {
   size: number,
   numberOfGames: number,
   serverAUrl: string,
+  serverAID?: string,
   serverBUrl: string,
+  serverBID?: string,
 }
 
 const defaultMatchSettings: MatchSettings = {
@@ -75,7 +78,6 @@ const startMatch = () => {
   websocket.onopen = wsOpen;
   websocket.onmessage = wsOnMessage;
   websocket.onerror = wsOnError;
-
   websocket.onclose = () => {
     websocket = null;
   }
@@ -89,17 +91,78 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
   return messages.value.find((message): message is MatchCompletedMessage => message.type == 'match_completed');
 })
 
+const playerServers = ref<PlayerServer[]>([])
+PlayerServerService.getPlayerServers
+    .then(servers => {
+      playerServers.value = servers
+      matchSettings.value.serverAID = servers
+          .find(({repository_url}) => repository_url == defaultMatchSettings.serverAUrl)?.name
+
+      matchSettings.value.serverBID = servers
+          .find(({repository_url}) => repository_url == defaultMatchSettings.serverBUrl)?.name
+
+    });
+
+const possiblePlayerServers = computed(() => {
+  return playerServers.value.filter(({sizes}) => {
+    let n = parseInt(matchSettings.value.size + "", 10)
+    return [...sizes].includes(n)
+  })
+})
+
+const serverDDChange = () => {
+  matchSettings.value.serverAUrl = possiblePlayerServers.value.find(({name}) =>
+      name == matchSettings.value.serverAID
+  )?.endpoint_url
+
+  matchSettings.value.serverBUrl = possiblePlayerServers.value.find(({name}) =>
+      name == matchSettings.value.serverBID
+  )?.endpoint_url
+}
+
 </script>
 <template>
   <div>
     <form @submit.prevent="startMatch()">
+      <div class="form-group bottom-offset">
+        <label for="size">Size of the game grid</label>
+        <select id="size" name="size" v-model="matchSettings.size">
+          <option value="3">3x3</option>
+          <option value="5">5x5</option>
+          <option value="7">7x7</option>
+        </select>
+      </div>
+
       <div class="form-group">
-        <label for="server-a">Player Server A URL</label>
+        <label for="server-a-dd">Player <span class="server-name">Server A</span></label>
+        <select name="server-a-dd"
+                v-model="matchSettings.serverAID"
+                @change="serverDDChange">
+          <option v-for="({name, author, endpoint_url}) in possiblePlayerServers" :value="name">
+            {{ name }} by {{ author }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group bottom-offset">
+        <label for="server-a"><i>or</i> Player <span class="server-name">Server A</span> URL</label>
         <input type="url" name="server-a" id="server-a"
                v-model="matchSettings.serverAUrl"/>
       </div>
+
       <div class="form-group">
-        <label for="server-b">Player Server B URL</label>
+        <label for="server-b-dd">Player <span class="server-name">Server B</span></label>
+        <select name="server-b-dd"
+                v-model="matchSettings.serverBID"
+                @change="serverDDChange">
+          <option v-for="({name, author, endpoint_url}) in possiblePlayerServers" :value="name">
+            {{ name }} by {{ author }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group bottom-offset">
+        <label for="server-b"><i>or</i> Player <span class="server-name">Server B</span> URL</label>
         <input type="url" name="server-b" id="server-b"
                v-model="matchSettings.serverBUrl"/>
       </div>
@@ -112,15 +175,6 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
                min="1"
                step="1"
                max="50"/>
-      </div>
-
-      <div class="form-group">
-        <label for="size">Size of the grid</label>
-        <select id="size" name="size" v-model="matchSettings.size">
-          <option value="3">3x3</option>
-          <option value="5">5x5</option>
-          <option value="7">7x7</option>
-        </select>
       </div>
 
       <div class="form-group">
@@ -176,9 +230,7 @@ const result = computed<MatchCompletedMessage | undefined>(() => {
 
     <div class="messages-wrap" v-if="messages.length != 0">
       <p class="title">Real-time exchange</p>
-      <div class="message" v-for="message in messages">
-        {{ message.message }}
-      </div>
+      <div class="message" v-for="message in messages">{{ message.message }}</div>
     </div>
   </div>
 </template>
@@ -211,6 +263,11 @@ form .form-group.size-group {
   }
 }
 
+form .form-group.bottom-offset {
+  margin-bottom: 20px;
+}
+
+
 .match-result, .messages-wrap {
   margin-bottom: 20px;
 
@@ -235,4 +292,11 @@ form .form-group.size-group {
     }
   }
 }
+
+.server-name {
+  background-color: #ff6500;
+  color: white;
+  font-weight: 700;
+}
+
 </style>
