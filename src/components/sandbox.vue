@@ -138,7 +138,7 @@ const serverDDChange = () => {
         <select name="server-a-dd"
                 v-model="matchSettings.serverAID"
                 @change="serverDDChange">
-          <option v-for="({name, author, endpoint_url}) in possiblePlayerServers" :value="name">
+          <option v-for="({name, author}) in possiblePlayerServers" :value="name">
             {{ name }} by {{ author }}
           </option>
         </select>
@@ -155,7 +155,7 @@ const serverDDChange = () => {
         <select name="server-b-dd"
                 v-model="matchSettings.serverBID"
                 @change="serverDDChange">
-          <option v-for="({name, author, endpoint_url}) in possiblePlayerServers" :value="name">
+          <option v-for="({name, author}) in possiblePlayerServers" :value="name">
             {{ name }} by {{ author }}
           </option>
         </select>
@@ -192,6 +192,7 @@ const serverDDChange = () => {
           <th>Won</th>
           <th>Lost</th>
           <th>Tie</th>
+          <th>Crashed</th>
           <th>R. med. [ms]</th>
           <th>R. avg. [ms]</th>
           <th>R. min [ms]</th>
@@ -206,6 +207,7 @@ const serverDDChange = () => {
           <td>{{ result.matchResult.player_x_result.won }}</td>
           <td>{{ result.matchResult.player_x_result.lost }}</td>
           <td>{{ result.matchResult.player_x_result.tie }}</td>
+          <td>{{ result.matchResult.player_x_result.crashed }}</td>
           <td>{{ result.matchResult.player_x_result.response_median_ms }}</td>
           <td>{{ result.matchResult.player_x_result.response_average_ms }}</td>
           <td>{{ result.matchResult.player_x_result.response_min_ms }}</td>
@@ -218,6 +220,7 @@ const serverDDChange = () => {
           <td>{{ result.matchResult.player_o_result.won }}</td>
           <td>{{ result.matchResult.player_o_result.lost }}</td>
           <td>{{ result.matchResult.player_o_result.tie }}</td>
+          <td>{{ result.matchResult.player_o_result.crashed }}</td>
           <td>{{ result.matchResult.player_o_result.response_median_ms }}</td>
           <td>{{ result.matchResult.player_o_result.response_average_ms }}</td>
           <td>{{ result.matchResult.player_o_result.response_min_ms }}</td>

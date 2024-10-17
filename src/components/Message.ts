@@ -25,6 +25,7 @@ export type PlayerResult = {
     won: number,
     lost: number,
     tie: number,
+    crashed: number,
     response_average_ms: number,
     response_median_ms: number,
     response_p99_ms: number,
