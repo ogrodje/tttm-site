@@ -1,4 +1,8 @@
 ---
+import {Image} from 'astro:assets';
+import ogrodjeLogo from "../assets/ogrodje-logo-base.png"
+const ogrodjeLogoSrc = `url(${ogrodjeLogo.src})`;
+
 const {title} = Astro.props;
 
 const getTitle = (title: string | undefined): string => {
@@ -23,10 +27,19 @@ const getTitle = (title: string | undefined): string => {
     <article>
         <slot/>
     </article>
+    <footer>
+        <div class="pwd">Powered by</div>
+        <div class="logos">
+            <a href="https://ogrodje.si" class="logo ogrodje" target="_blank">Ogrodje</a>
+        </div>
+        <div class="join-us">
+            <div><a href="https://bit.ly/discord-ogrodje" target="_blank">Join us on Discord @ <code>#tttm-challenge</code>.</a></div>
+        </div>
+    </footer>
 </div>
 </body>
 </html>
-<style lang="scss" is:global>
+<style lang="scss" is:global define:vars={{ogrodjeLogoSrc}}>
   // Colors: https://x.com/alexcristache/status/1841852966359146798?t=AZl7vBZcaJvRyxx6Yz_g-w
   @use "sass:list";
   @use "sass:color";
@@ -142,6 +155,50 @@ const getTitle = (title: string | undefined): string => {
 
     input {
       width: 500px;
+    }
+  }
+
+  footer {
+    border-top: 1px solid #2c2c2c;
+    display: block;
+    margin-top: 100px;
+
+    line-height: 40px;
+
+    display: block;
+    height: 100px;
+
+    .pwd, .logos, .join-us {
+      display: inline-block;
+      line-height: 100px;
+      height: 100px;
+      float: left;
+      margin-right: 10px;
+      margin-left: 20px;
+    }
+
+    .join-us {
+      float: right;
+      padding-right: 20px;
+    }
+
+    .pwd {
+
+    }
+
+    .logos {
+      .ogrodje {
+        overflow: hidden;
+        text-indent: -9999px;
+        display: block;
+        background-image: var(--ogrodjeLogoSrc);
+        background-position: center center;
+        background-clip: content-box;
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 100px;
+        width: 100px;
+      }
     }
   }
 </style>
