@@ -1,6 +1,11 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import PlayerRankings from '../components/player-rankings.vue';
 ---
 <MainLayout title="Rankings">
-  <p>We'll have rankings for developers here.</p>
+    <PlayerRankings size="7"></PlayerRankings>
+    <PlayerRankings size="5"></PlayerRankings>
+    <PlayerRankings size="3"></PlayerRankings>
+
+    <p>To play with us, please create <a href="https://github.com/ogrodje/tttm/pulls">PR here</a>. 🚀</p>
 </MainLayout>

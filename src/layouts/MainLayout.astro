@@ -20,7 +20,7 @@ const getTitle = (title: string | undefined): string => {
 <div class="wrap">
     <nav class="nav">
         <a href="/" class="logo about">The <span class="main">TTTM</span> Challenge</a>
-        <!-- <a href="/rankings" class="rankings">Rankings</a> -->
+        <a href="/rankings" class="rankings">Rankings</a>
         <a href="/sandbox" class="sandbox">Sandbox</a>
     </nav>
     <h1>{title}</h1>
@@ -33,7 +33,8 @@ const getTitle = (title: string | undefined): string => {
             <a href="https://ogrodje.si" class="logo ogrodje" target="_blank">Ogrodje</a>
         </div>
         <div class="join-us">
-            <div><a href="https://bit.ly/discord-ogrodje" target="_blank">Join us on Discord @ <code>#tttm-challenge</code>.</a></div>
+            <div><a href="https://bit.ly/discord-ogrodje" target="_blank">Join us on Discord @
+                <code>#tttm-challenge</code>.</a></div>
         </div>
     </footer>
 </div>
@@ -162,10 +163,7 @@ const getTitle = (title: string | undefined): string => {
     border-top: 1px solid #2c2c2c;
     display: block;
     margin-top: 100px;
-
     line-height: 40px;
-
-    display: block;
     height: 100px;
 
     .pwd, .logos, .join-us {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {type Ref, ref, onUnmounted, computed} from 'vue';
-import type {MatchCompletedMessage, Message, MessageType} from "./Message.ts";
+import {computed, onUnmounted, type Ref, ref} from 'vue';
+import type {MatchCompletedMessage, Message} from "./Message.ts";
 import {type PlayerServer, PlayerServerService} from "./PlayerServer.ts";
 
 const PUBLIC_TTTM_WS_URL: string = `${import.meta.env.PUBLIC_TTTM_WS_URL}`;

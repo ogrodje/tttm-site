@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {type Ref, ref, onUnmounted, computed, reactive} from 'vue';
-import type {MatchCompletedMessage} from "./Message.ts";
+import {ref} from 'vue';
 
 interface BuildConfig {
   size: number,
