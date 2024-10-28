@@ -20,8 +20,12 @@ const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
   <h1>{{ sizeToName(props.size) }}</h1>
 
   <div class="rankings">
-    <div v-for="r in rankings" class="ranking">
-      <div class="rank">{{ r.rank }}</div>
+    <div v-for="(r, n) in rankings" class="ranking">
+      <div class="rank" v-if="n == 0">🥇</div>
+      <div class="rank" v-else-if="n == 1">🥈</div>
+      <div class="rank" v-else-if="n == 2">🥉</div>
+      <div class="rank" v-else>{{ r.rank }}</div>
+
       <div class="details">
         <div class="player_server_id">{{ r.player_server_id }}</div>
         <div class="author"><a
@@ -48,7 +52,7 @@ const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
       display: inline-block;
       position: absolute;
       left: 0;
-      top: 0;
+      top: 20px;
       width: 80px;
       text-align: center;
       font-size: 50px;
