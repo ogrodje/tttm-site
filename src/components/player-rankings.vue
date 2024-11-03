@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {type Ranking, RankingEndpoint} from "./Ranking.ts";
 import {defineProps, ref} from 'vue';
+import Tags from "./tags.vue";
+import {stringToColor} from "./StringToColor.ts";
 
 const props = defineProps(['size'])
 const sizeToName = n => `${n}x${n}`
@@ -26,15 +28,17 @@ const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
       <div class="rank" v-else>{{ r.rank }}</div>
 
       <div class="details">
-        <div class="player_server_id">{{ r.player_server_id }}</div>
-        <div class="author"><a
-            target="_blank"
-            v-bind:href=r.player.author_url
-        >{{ r.player.author }}</a></div>
+        <div class="player_server_id"
+             v-bind:style="{color: stringToColor(r.player_server_id)}"
+        >{{ r.player_server_id }}
+        </div>
+        <div class="author">
+          <a target="_blank" v-bind:href=r.player.author_url>{{ r.player.author }}</a></div>
         <div class="author_url" v-if="r.player.repository_url">
           <a v-bind:href=r.player.repository_url>Source code</a>
         </div>
         <div class="score"><strong>{{ lastScore(r)?.toFixed(2) }}</strong> on {{ lastScoreDate(r) }}</div>
+        <tags v-bind:tags=r.player.tags></tags>
       </div>
     </div>
   </div>
