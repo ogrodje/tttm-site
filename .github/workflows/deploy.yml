@@ -5,6 +5,8 @@ on:
   push:
     branches: [ master ]
   workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *' # use https://crontab.guru/
 
 env:
   PUBLIC_TTTM_WS_URL: wss://tttm.tttm.dev/sandbox
@@ -21,21 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 21
-      #     cache: 'yarn'
-      # - name: "Build it"
-      #   run: yarn install --frozen-lockfile && yarn run build
-
-      # Too slow. ;/
-      - uses: cachix/install-nix-action@v26
-      - uses: cachix/cachix-action@v14
+      - uses: actions/setup-node@v4
         with:
-          name: devenv
+          node-version: 21
+          cache: 'yarn'
 
-      - run: nix profile install nixpkgs#devenv
-      - run: devenv shell yarn run build
+      - run: yarn install --frozen-lockfile && yarn run build
+
+      # # Too slow. ;/
+      # - uses: cachix/install-nix-action@v26
+      # - uses: cachix/cachix-action@v14
+      #   with:
+      #     name: devenv
+      # - run: nix profile install nixpkgs#devenv
+      # - run: devenv shell yarn run build
 
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v3
@@ -52,6 +53,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: github-pages
 
       - uses: sarisia/actions-status-discord@v1
         if: ${{ github.ref == 'refs/heads/master' }}
