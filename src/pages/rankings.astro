@@ -3,9 +3,38 @@ import MainLayout from '../layouts/MainLayout.astro';
 import PlayerRankings from '../components/player-rankings.vue';
 ---
 <MainLayout title="Rankings">
-    <PlayerRankings size="7"></PlayerRankings>
-    <PlayerRankings size="5"></PlayerRankings>
-    <PlayerRankings size="3"></PlayerRankings>
+    <div class="ranking-columns">
+        <div class="ranking-column">
+            <PlayerRankings size="7"></PlayerRankings>
 
+        </div>
+        <div class="ranking-column">
+            <PlayerRankings size="5"></PlayerRankings>
+        </div>
+        <div class="ranking-column">
+            <PlayerRankings size="3"></PlayerRankings>
+        </div>
+    </div>
     <p>To play with us, please create <a href="https://github.com/ogrodje/tttm/pulls">PR here</a>. 🚀</p>
 </MainLayout>
+
+<style lang="scss">
+
+  .ranking-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  @media (max-width: 700px) {
+    .ranking-columns {
+      display: block;
+    }
+
+    .ranking-column {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

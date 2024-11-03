@@ -8,12 +8,11 @@ const sizeToName = n => `${n}x${n}`
 const rawRankings = await RankingEndpoint.getRankings(props.size);
 const rankings = ref<Ranking[]>(rawRankings)
 
-const lastScoring = (ranking: Ranking) => ranking.scores[0];
+const lastScoring = (ranking: Ranking) => ranking.scores[ranking.scores.length - 1];
 const lastTournament = (ranking: Ranking) => lastScoring(ranking)?.[0]
 const lastRank = (ranking: Ranking) => lastScoring(ranking)?.[2]
 const lastScore = (ranking: Ranking) => lastScoring(ranking)?.[3]
 const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
-
 
 </script>
 <template>
@@ -35,7 +34,7 @@ const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
         <div class="author_url" v-if="r.player.repository_url">
           <a v-bind:href=r.player.repository_url>Source code</a>
         </div>
-        <div class="score">Score: {{ lastScore(r) }} @ {{ lastScoreDate(r) }}</div>
+        <div class="score"><strong>{{ lastScore(r)?.toFixed(2) }}</strong> on {{ lastScoreDate(r) }}</div>
       </div>
     </div>
   </div>
