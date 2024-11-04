@@ -19,7 +19,8 @@ const getTitle = (title: string | undefined): string => {
 <body>
 <div class="wrap">
     <nav class="nav">
-        <a href="/" class="logo about">The <span class="main">TTTM</span> Challenge</a>
+        <a href="/" class="logo about big">The <span class="main">TTTM</span> Challenge</a>
+        <a href="/" class="logo about small"><span class="main">TTTM</span></a>
         <a href="/rankings" class="rankings">Rankings</a>
         <a href="/sandbox" class="sandbox">Sandbox</a>
     </nav>
@@ -93,6 +94,18 @@ const getTitle = (title: string | undefined): string => {
       padding-left: 10px;
       padding-right: 10px;
       text-decoration: none;
+
+      &.small { display: none }
+
+      @media (max-width: 900px) {
+        &.big {
+          display: none;
+        }
+
+        &.small {
+          display: inline-block;
+        }
+      }
 
       span.main {
         font-weight: 700;
