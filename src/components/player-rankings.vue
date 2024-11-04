@@ -15,22 +15,24 @@ const lastTournament = (ranking: Ranking) => lastScoring(ranking)?.[0]
 const lastRank = (ranking: Ranking) => lastScoring(ranking)?.[2]
 const lastScore = (ranking: Ranking) => lastScoring(ranking)?.[3]
 const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
+const showScores = false
 
 </script>
 <template>
-  <h1>{{ sizeToName(props.size) }}</h1>
+  <h1 class="size-title">🏆 {{ sizeToName(props.size) }} 🏆</h1>
 
   <div class="rankings">
-    <div v-for="(r, n) in rankings" class="ranking">
-      <div class="rank" v-if="n == 0">🥇</div>
-      <div class="rank" v-else-if="n == 1">🥈</div>
-      <div class="rank" v-else-if="n == 2">🥉</div>
+
+    <div v-for="(r, n) in rankings" :key="r.rank" class="ranking">
+      <div class="rank" v-if="r.rank == 1">🥇</div>
+      <div class="rank" v-else-if="r.rank == 2">🥈</div>
+      <div class="rank" v-else-if="r.rank == 3">🥉</div>
       <div class="rank" v-else>{{ r.rank }}</div>
 
       <div class="details">
         <div class="player_server_id"
              v-bind:style="{color: stringToColor(r.player_server_id)}"
-        >{{ r.player_server_id }}
+        >{{ r.player_server_id }} #{{ r.rank }}
         </div>
         <div class="author">
           <a target="_blank" v-bind:href=r.player.author_url>{{ r.player.author }}</a></div>
@@ -39,11 +41,22 @@ const lastScoreDate = (ranking: Ranking) => lastScoring(ranking)?.[1]
         </div>
         <div class="score"><strong>{{ lastScore(r)?.toFixed(2) }}</strong> on {{ lastScoreDate(r) }}</div>
         <tags v-bind:tags=r.player.tags></tags>
+
+        <div v-if="showScores" class="scores">
+          <div v-for="(s, i) in r.scores" :key="i">
+            {{ s[1] }} Ranking: {{ s[2] }}, Score: {{ s[3] }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+
+h1.size-title {
+  font-size: xx-large;
+  text-align: center;
+}
 
 .rankings {
   .ranking {
